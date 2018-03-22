@@ -2,37 +2,31 @@ import time
 import random
 
 
-def insetion_sort(dane):
-    for index in range(1, len(dane)):
-
-        currentvalue = dane[index]
-        position = index
-        # pozycjonowanie wartości w posortowanej części
-        while position > 0 and dane[position - 1] > currentvalue:
-            dane[position] = dane[position - 1]
-            position = position - 1
-
-        dane[position] = currentvalue
+def insertion_sort(dane):
+    for index in range(len(dane)):
+        i = index - 1
+        while dane[index] < dane[i] and i >= 0: i -= 1
+        dane.insert(i + 1, dane[index])
+        del dane[index + 1]
     return dane
 
 
 def selection_sort(dane):
-    for sorted in range(len(dane)):
-        print(dane)
-        positionOfMin = sorted
-        # wyszukiwanie najmniejszego
-        for location in range(sorted, len(dane)):
-            if dane[location] < dane[positionOfMin]:
-                positionOfMin = location
-        dane[positionOfMin], dane[sorted] = dane[sorted], dane[positionOfMin]
+    #  XD for x, y in map(lambda i: (i + dane[i:].index(min(dane[i:])), i), range(len(dane))): dane[x], dane[y] = dane[y], dane[x]
+    for i in range(len(dane)):
+        mini = i + dane[i:].index(min(dane[i:]))
+        dane[mini], dane[i] = dane[i], dane[mini]
     return dane
 
 
 def bubble_sort(dane):
-    for sorted in range(len(dane)):
-        for change in range(len(dane) - 1, sorted, -1):
-            if dane[change] < dane[change - 1]:
-                dane[change], dane[change - 1] = dane[change - 1], dane[change]
+    sorted = 0
+    while not sorted:
+        sorted = 1
+        for i in range(len(dane) - 1):
+            if dane[i] > dane[i + 1]:
+                dane[i], dane[i + 1] = dane[i + 1], dane[i]
+                sorted = 0
     return dane
 
 
@@ -162,7 +156,7 @@ def run():
     dane = gen_list(10, 50)
     print(dane)
     start_time = time.time()
-    dane = heap_sort(dane)
+    dane = bubble_sort(dane)
     print(dane)
     return time.time() - start_time
 
