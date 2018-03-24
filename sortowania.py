@@ -2,43 +2,40 @@ from time import time
 from random import random, choice
 
 
-def insertion_sort(dane):
-    for index in range(len(dane)):
+def insertion_sort(data: list) -> list:
+    for index in range(len(data)):
         i = index - 1
-        while dane[index] < dane[i] and i >= 0: i -= 1
-        dane.insert(i + 1, dane[index])
-        del dane[index + 1]
-    return dane
+        while data[index] < data[i] and i >= 0: i -= 1
+        data.insert(i + 1, data[index])
+        del data[index + 1]
+    return data
 
 
-def selection_sort(dane):
-    #  XD for x, y in map(lambda i: (i + dane[i:].index(min(dane[i:])), i), range(len(dane))): dane[x], dane[y] = dane[y], dane[x]
-    for i in range(len(dane)):
-        mini = i + dane[i:].index(min(dane[i:]))
-        dane[mini], dane[i] = dane[i], dane[mini]
-    return dane
+def selection_sort(data: list) -> list:
+    #  XD for x, y in map(lambda i: (i + data[i:].index(min(data[i:])), i), range(len(data))):
+    #       data[x], data[y] = data[y], data[x]
+    for i in range(len(data)):
+        mini = i + data[i:].index(min(data[i:]))
+        data[mini], data[i] = data[i], data[mini]
+    return data
 
 
-def bubble_sort(dane):
+def bubble_sort(data: list) -> list:
     is_sorted = 0
     while not is_sorted:
         is_sorted = 1
-        for i in range(len(dane) - 1):
-            if dane[i] > dane[i + 1]:
-                dane[i], dane[i + 1] = dane[i + 1], dane[i]
+        for i in range(len(data) - 1):
+            if data[i] > data[i + 1]:
+                data[i], data[i + 1] = data[i + 1], data[i]
                 is_sorted = 0
-    return dane
+    return data
 
 
-def quick_sort(dane):
-    if len(dane) <= 1: return dane
-    dv = choice(dane)
-    d1, d2 = [x for x in dane if x < dv], [x for x in dane if x > dv]
-    return quick_sort(d1) + [dv] * dane.count(dv) + quick_sort(d2)
-
-
-def wybierzpunkt(l, r):
-    return (l + r) // 2
+def quick_sort(data: list) -> list:
+    if len(data) <= 1: return data
+    dv = choice(data)
+    d1, d2 = [x for x in data if x < dv], [x for x in data if x > dv]
+    return quick_sort(d1) + [dv] * data.count(dv) + quick_sort(d2)
 
 
 # heap sort
@@ -59,7 +56,7 @@ class Heap:
         self.size += 1
         self.float(self.size)
 
-    def minindex(self, k):
+    def min_index(self, k):
         if k * 2 + 1 > self.size:
             return k * 2
         elif self.heap[k * 2] < self.heap[k * 2 + 1]:
@@ -69,7 +66,7 @@ class Heap:
 
     def sink(self, k):
         while k * 2 <= self.size:
-            mi = self.minindex(k)
+            mi = self.min_index(k)
             if self.heap[k] > self.heap[mi]:
                 self.heap[k], self.heap[mi] = self.heap[mi], self.heap[k]
             k = mi
@@ -83,7 +80,7 @@ class Heap:
         return item
 
 
-def heap_sort(data):
+def heap_sort(data: list) -> list:
     sztosik = Heap()
     for i in data:
         sztosik.insert(i)
@@ -95,49 +92,14 @@ def heap_sort(data):
     return sorted_data
 
 
-def merge(a, b):
-    # Function to merge two arrays
-    c = []
-    while len(a) != 0 and len(b) != 0:
-        if a[0] < b[0]:
-            c.append(a[0])
-            a.remove(a[0])
-        else:
-            c.append(b[0])
-            b.remove(b[0])
-    if len(a) == 0:
-        c += b
-    else:
-        c += a
-    return c
+def gen_list(size: int, ran: int) -> list:
+    return [random.randint(0, ran) for _ in range(size)]
 
 
-def mergesort(dane):
-    if len(dane) <= 1:
-        return dane
-    return merge(right, left)
-
-
-def podzial(dane):
-    if len(dane) <= 1:
-        return dane
-    right = podzial(dane[:len(dane) // 2])
-    left = podzial(dane[len(dane) // 2:])
-
-
-def run():
-    dane = gen_list(10, 50)
-    print(dane)
+if __name__ == "__main__":
+    unsorted = gen_list(10, 50)
+    print(unsorted)
     start_time = time()
-    dane = quick_sort(dane)
-    print(dane)
-    return time() - start_time
-
-
-def gen_list(size, ran):
-    lista = []
-    lista = [random.randint(0, ran) for x in range(size)]
-    return lista
-
-
-run()
+    unsorted = quick_sort(unsorted)
+    print(unsorted)
+    print(time() - start_time)
