@@ -1,5 +1,5 @@
 from time import time
-from random import random, choice
+from random import random, choice, randint
 
 
 def insertion_sort(data: list) -> list:
@@ -64,6 +64,7 @@ def merge_sort(data):
 
 # heap sort
 
+
 class Heap:
     def __init__(self):
         self.heap = [0]
@@ -108,7 +109,6 @@ def heap_sort(data: list) -> list:
     sztosik = Heap()
     for i in data:
         sztosik.insert(i)
-    print("Unsorted list : {}".format(data))
     sorted_data = []
     for j in range(sztosik.size):
         top = sztosik.pop()
@@ -117,13 +117,28 @@ def heap_sort(data: list) -> list:
 
 
 def gen_list(size: int, ran: int) -> list:
-    return [random.randint(0, ran) for _ in range(size)]
+    return [randint(0, ran) for _ in range(size)]
+
+
+def test_sorts():
+    slow = (bubble_sort, insertion_sort, selection_sort)
+    fast = (merge_sort, quick_sort, heap_sort)
+    counts = (1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000)
+
+    def test(counts, functions):
+        for c in counts:
+            unsorted = gen_list(c, c)
+            print("\n{} elements-----------------------------------------------------".format(c))
+            for f in functions:
+                cp = unsorted.copy()
+                start_time = time()
+                cp = f(cp)
+                end_time = time() - start_time
+                print("{}:\t{}s,\t\tsorted correctly: {}".format(f.__name__, end_time, cp == sorted(cp)))
+
+    test(counts[:4], slow + fast)
+    test(counts[4:], fast)
 
 
 if __name__ == "__main__":
-    unsorted = gen_list(10, 50)
-    print(unsorted)
-    start_time = time()
-    unsorted = quick_sort(unsorted)
-    print(unsorted)
-    print(time() - start_time)
+    test_sorts()
