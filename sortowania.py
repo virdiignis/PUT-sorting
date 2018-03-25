@@ -38,6 +38,30 @@ def quick_sort(data: list) -> list:
     return quick_sort(d1) + [dv] * data.count(dv) + quick_sort(d2)
 
 
+def merge(d1, d2):
+    i, j = 0, 0
+    ld1, ld2 = len(d1), len(d2)
+    while i < ld1 and j < ld2:
+        if d1[i] < d2[j]:
+            yield d1[i]
+            i += 1
+        else:
+            yield d2[j]
+            j += 1
+    if i < len(d1):
+        for x in d1[i:]: yield x
+    elif j < len(d2):
+        for x in d2[j:]: yield x
+
+
+def merge_sort(data):
+    i = 2
+    while i < len(data) * 2:
+        for j in range(0, len(data), i):
+            data[j:j + i] = merge(data[j:j + i // 2], data[j + i // 2:j + i])
+        i *= 2
+    return data
+
 # heap sort
 
 class Heap:
