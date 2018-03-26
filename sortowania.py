@@ -1,5 +1,6 @@
 from time import time
-from random import random, choice, randint
+from random import choice, randint
+from types import FunctionType
 
 
 def insertion_sort(data: list) -> list:
@@ -31,11 +32,19 @@ def bubble_sort(data: list) -> list:
     return data
 
 
-def quick_sort(data: list) -> list:
+def quick(data: list, elem_choice: FunctionType) -> list:
     if len(data) <= 1: return data
-    dv = choice(data)
+    dv = elem_choice(data)
     d1, d2 = [x for x in data if x < dv], [x for x in data if x > dv]
-    return quick_sort(d1) + [dv] * data.count(dv) + quick_sort(d2)
+    return quick(d1, elem_choice) + [dv] * data.count(dv) + quick(d2, elem_choice)
+
+
+def quick_sort_random(data: list) -> list:
+    return quick(data, choice)
+
+
+def quick_sort_left(data: list) -> list:
+    return quick(data, lambda x: x[0])
 
 
 def merge(d1, d2):
@@ -116,13 +125,21 @@ def heap_sort(data: list) -> list:
     return sorted_data
 
 
+def counting_sort(data: list, bound: int) -> list:
+    cnt = [0] * (bound + 1)
+    for i in data: cnt[i] += 1
+    ret = []
+    for i in range(bound): ret.extend([i] * cnt[i])
+    return ret
+
+
 def gen_list(size: int, ran: int) -> list:
     return [randint(0, ran) for _ in range(size)]
 
 
 def test_sorts():
     slow = (bubble_sort, insertion_sort, selection_sort)
-    fast = (merge_sort, quick_sort, heap_sort)
+    fast = (merge_sort, quick_sort_random, quick_sort_left, heap_sort)
     counts = (1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000)
 
     def test(counts, functions):
