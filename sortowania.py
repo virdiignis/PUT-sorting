@@ -151,7 +151,7 @@ def test_sorts():
                 start_time = time()
                 cp = f(cp)
                 end_time = time() - start_time
-                print("{}:\t{}s,\t\tsorted correctly: {}".format(f.__name__, end_time, cp == sorted(cp)))
+                print("{}:\t{},\t\tsorted correctly: {}".format(f.__name__, end_time, cp == sorted(cp)))
 
     test(counts[:4], slow + fast)
     test(counts[4:], fast)
